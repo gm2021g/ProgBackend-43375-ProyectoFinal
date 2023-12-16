@@ -1,0 +1,85 @@
+<main>
+  {{#if response.user}}
+    <h2 class="welcome__message">Frangances Shop     
+      <br>
+      {{this.response.first_name}}
+      {{this.response.last_name}} 
+    </h2>
+    <div class="welcome__navbar">
+      <li class="welcome__navbar--li"><a
+          href="/api/sessions/current"
+        >Profile</a></li>
+
+      <li class="welcome__navbar--li"><a href="/logout">Logout</a></li>
+
+      <li class="welcome__navbar--li"><a
+          href="/carts/{{this.response.user_cart}}" 
+        >Cart</a></li>
+
+      <li class="welcome__navbar--li"><a href="/chat">Chat</a></li>
+
+      <li class="welcome__navbar--li"><a href="/create">Create Product</a></li>
+
+    </div>
+
+    <hr> <br>
+  {{/if}}
+  <div class="pagination__container">
+    {{!-- <div class="filters__container">
+      <h4>Filters:</h4>
+      <div>category</div>
+       <button class="pagination__button">most expensive</button>
+      <button class="pagination__button">less expensive</button> 
+
+    </div> --}}
+    <div class="pages__container">
+      <a href="{{response.prevLink}}"><button
+          class="pagination__button"
+        > Previous </button></a>
+      <a href="{{response.nextLink}}"><button
+          class="pagination__button"
+        > Following </button></a>
+    </div>
+  </div>
+  <div class="products__container">
+    {{#each response.payload}}
+      <div class="product__container">
+        <div class="product__category">
+          <span>{{this.category}}</span>
+        </div>
+        <h3 class="product__title">{{this.title}}</h3>
+        <div class="product__img--container">
+          <img src={{this.thumbnail}} alt={{this.title}} />
+        </div>
+        <h4 class="product__price">${{this.price}}</h4>
+        
+        <div>
+        <a href="/products/{{this._id}}">
+        <button class="product__button"> 
+          Detail
+        </button>
+        </a>
+        </div>
+
+      </div>
+    {{/each}}
+  </div>
+  <div class="pagination__container">
+   {{!-- <div class="filters__container">
+      <h4>Filters:</h4>
+      <div>category</div>
+       <button class="pagination__button">most expensive</button>
+      <button class="pagination__button">less expensive</button> 
+
+    </div>--}}
+
+    <div class="pages__container">
+      <a href="{{response.prevLink}}"><button
+          class="pagination__button"
+        > Previous </button></a>
+      <a href="{{response.nextLink}}"><button
+          class="pagination__button"
+        > Following </button></a>
+    </div>
+  </div>
+</main>

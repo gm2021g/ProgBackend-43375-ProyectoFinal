@@ -1,0 +1,203 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+       - Products
+      responses:
+        "200":
+          description: Todos los productos fueron devueltos satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/newProduct'
+      responses:
+        "200":
+          description: Se creo satisfactoriamente el producto
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se solicita
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+    put:
+      summary: Actualiza un producto a partir del ID
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se solicita
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct'
+      responses:
+        "202":
+          description: Se actualizo el producto satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+    delete:
+      summary: Elimina un producto a partir del ID
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se solicita
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Se elimino el producto satisfactoriamente.
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado en mongo
+        title:
+          type: String
+          description: titulo del producto
+        description:
+          type: String
+          description: descripcion del producto
+        code:
+          type: String
+          description: codigo del producto
+        price:
+          type: Number
+          description: Precio del producto
+        status:
+          type: Boolean
+          description: Estado del producto
+        stock:
+          type: Number
+          description: Cantidad en stock
+        category:
+          type: String
+          description: Categoria del producto
+        thumbnails:
+          type: Array
+          description: Fotos del producto
+        owner:
+          type: ObjectId
+          description: Id del usuario que creo el producto
+      example:
+        _id: 64e97b75cee5f4536835a6c9
+        title": LA VIE EST BELLE EDP
+        price": 695
+        description: Share your happiness with this majestic reinterpretation of a fragrance…
+        category: Female
+        thumbnail: ["https://juleriaque.vtexassets.com/arquivos/ids/201481/la-vie-est-belle-edp-6580834A54130DB06CB5531233526EC2.jpg?v=1779384303"]
+        code: LANCOME
+        state: true
+        stock: 25
+  requestBodies:
+    newProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: titulo del producto
+        description:
+          type: String
+          description: descripcion del producto
+        code:
+          type: String
+          description: marca del producto
+        price:
+          type: Number
+          description: Precio del producto
+        status:
+          type: Boolean
+          description: Estado del producto
+        stock:
+          type: Number
+          description: Cantidad en stock
+        category:
+          type: String
+          description: Categoria del producto
+        thumbnails:
+          type: Array
+          description: Fotos del producto
+      example:
+        _id: 64e97c38cee5f4536835a6cb
+        title": 212
+        price": 125
+        description: This new generation of 212 VIP ROSÉ is the 212 Carolina Herrera, but with a more seductive nuance, more glamor and unmatched freshness. 212VIP ROSÉ contains the essence of the most exclusive parties in New York presented in a sophisticated yet fun feminine matte pink bottle with a VIP design. Top notes Pink Champagne, Pink Pepper. Heart notes Peach blossom, Bouquet of roses. Top notes:Queenwood, Musk. Aroma Floral/Fruity.
+        category: Female
+        thumbnail: ["https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg"]
+        code: CAROLINA HERRERA
+        state: true
+        stock: 26
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: titulo
+        description:
+          type: String
+          description: descripcion
+        price:
+          type: Number
+          description: precio
+        stock:
+          type: Number
+          description: stock
+      example:
+        title: Nuevo titulo
+        description: Nueva descripcion
+        price: 100
+        stock: 10
+tags: []
