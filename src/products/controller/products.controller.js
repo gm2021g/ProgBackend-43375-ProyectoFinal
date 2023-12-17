@@ -60,36 +60,6 @@ export const getProductByIdCtr = async (req, res) => {
   }
 };
 
-//Agrego un nuevo producto que llega por req.body
-/*export const addNewProductCtr = async (req, res) => {
-  try {
-    const newProduct = req.body;
-    const { title, price, description, code, category } = newProduct;
-    if (!title || !price || !description || !code || !category) {
-      CustomError.createError({
-        name: ERRORS_ENUM["INVALID PRODUCT PROPERTY"],
-        message: generateProductErrorInfo(newProduct),
-      });
-    }
-    const result = await ProductsServices.addProduct(newProduct);
-
-    if (!result) {
-      CustomError.createError({
-        message: ERRORS_ENUM["INVALID PRODUCT PROPERTY"],
-      });
-    }
-
-    res.render("one", {
-      product: newProduct,
-      style: "style.css",
-    });
-  } catch (error) {
-    req.logger.error(error);
-    return res.status(400).send({ status: error.name, message: error.message });
-  }
-};
-*/
-
 export const addNewProductCtr = async (req, res) => {
   try {
     const newProduct = req.body;
@@ -147,28 +117,6 @@ export const updateProductCtr = async (req, res) => {
     return res.status(400).send({ status: error.name, message: error.message });
   }
 };
-
-// Eliminar un producto
-/*export const deleteProductCtr = async (req, res) => {
-  try {
-    const { pid } = req.params;
-
-    const result = await ProductsServices.deleteProduct(pid);
-
-    if (!result) {
-      CustomError.createError({
-        message: ERRORS_ENUM["PRODUCT NOT FOUND"],
-      });
-    }
-
-    return res.status(202).send({
-      payload: result,
-    });
-  } catch (error) {
-    req.logger.error(error);
-    return res.status(400).send({ status: error.name, message: error.message });
-  }
-};*/
 
 export const deleteProductCtr = async (req, res) => {
   try {

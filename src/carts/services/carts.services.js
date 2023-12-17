@@ -198,8 +198,25 @@ class CartsService {
 
       const result = await cartsModel.updateOne(
         { _id: cid },
-        { $set: { carts: [] } }
+        { $set: { cart: [] } }
       );
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteCart = async (cid) => {
+    try {
+      let cart = await this.getCartById(cid);
+
+      if (!cart) throw new Error("Cart Not Found");
+
+      cart = await this.deleteAllProducts(cid);
+
+      const result = await cartsModel.deleteOne({ _id: cid });
+
+      return result;
     } catch (error) {
       console.log(error);
     }

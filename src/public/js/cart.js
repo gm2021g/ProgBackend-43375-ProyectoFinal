@@ -11,7 +11,7 @@ const deleteProduct = async (cid, pid) => {
     const result = await response.json();
 
     if (response.status === 200) {
-      alert("Producto eliminado correctamente");
+      alert("Product deleted");
     }
   } catch (error) {
     console.log(error);

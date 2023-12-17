@@ -54,27 +54,10 @@ class ProductsService {
     }
   };
 
-  // Agregar un producto
-  /*
-  addProduct = async (newProduct) => {
-    try {
-      const result = await productsModel.create(newProduct);
-
-      if (!result) {
-        throw new Error("Error to add to database");
-      }
-
-      return result;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-*/
   addProduct = async (newProduct, user) => {
     try {
-      const product = await productsModel.findOne({ code: newProduct.code });
-  console.log ('newProduct.code *** ', newProduct.code);
-  
+      const product = await productsModel.findOne({ title: newProduct.title });
+
       if (product) {
         throw new Error("Product Already Exist in DB");
       }
@@ -103,19 +86,6 @@ class ProductsService {
       throw new Error(error.message);
     }
   };
-
-  // eliminar un producto
-  /*
-  deleteProduct = async (pid) => {
-    try {
-      const result = await productsModel.deleteOne({ _id: pid });
-
-      return result;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-*/
 
   deleteProduct = async (pid, user) => {
     try {

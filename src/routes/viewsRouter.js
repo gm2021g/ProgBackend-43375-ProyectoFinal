@@ -82,6 +82,27 @@ Router.get("/products/:pid", async (req, res) => {
   }
 });
 
+// Muestra detalle de usuario para modificación 
+Router.get("/users/modify/:uid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const user = await ProductsServices.getProductById(pid);
+    const userCurrent = req.session.user;
+
+    res.render("modifyUser", {
+      style: "styles.css",
+      user,
+      userCurrent,
+    });
+  } catch (error) {
+    req.logger.error(error);
+    res.send({
+      status: "error",
+      error: error.message || "SOMETHING WENT WRONG",
+    });
+  }
+});
+
 // Muestra un carrito
 Router.get(
   "/carts/:cid",

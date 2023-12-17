@@ -1,0 +1,53 @@
+<main>
+  <h2 class="welcome__message"> Modify User </h2> 
+  <hr> <br>
+  <div>
+    <p>First name: {{user.first_name}}</p>
+    <p>Last name: {{user.last_name}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Role: {{user.role}}</p>
+    <br>
+    <div>
+      <button     
+        class="product__detail__button"
+        id="deleteUser__btn"
+        value={{user._id}}>
+        Delete User
+      </button>
+    </div>
+
+    <br>
+    <hr> 
+    <br>
+    <div>
+    <p>Change Role</p> 
+    <br>
+    <form>
+      <label>
+        <input type="radio" name="role" value="ADMIN">
+        ADMIN
+      </label>
+
+      <label>
+        <input type="radio" name="role" value="PREMIUM">
+        PREMIUM
+      </label>
+
+      <label>
+        <input type="radio" name="role" value="USER" checked>
+        USER
+      </label>
+
+      <button class="product__detail__button" type="button" id="changeRole__btn" value={{user._id}} onclick="modifyUserRole(this.value)"> 
+         Change Role 
+      </button>
+
+    </form>
+    </div>
+  </div>
+  <br>
+  <hr>
+
+
+</main>
+<script src="/js/user.js"></script>

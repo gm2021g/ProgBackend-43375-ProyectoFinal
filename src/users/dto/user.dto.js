@@ -8,5 +8,6 @@ export default class UserDto {
     this.cart = user.cart;
     this.role = user.role;
     this.documents = user.documents;
+    this.last_connection = user.last_connection;
   }
 }

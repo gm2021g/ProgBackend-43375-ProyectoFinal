@@ -4,11 +4,16 @@ import CustomError from "../../errors/customError.js";
 import userModel from "../../models/user.model.js";
 import { generateToken } from "../../utils/jwt.js";
 import UserDto from "../dto/user.dto.js";
-import { sendSuscriptionMail } from "../../mailer/controller/mailer.controller.js";
+import {
+  sendSuscriptionMail,
+  sendUserDeletedMail,
+  sendUserInactivityMail,
+} from "../../mailer/controller/mailer.controller.js";
+
 import path from "path";
 
 class UserServices {
-  finAll = async () => {
+  findAll = async () => {
     try {
       const users = await userModel.find().lean().exec();
 
@@ -119,7 +124,7 @@ class UserServices {
     }
   };
 
-  changeRole = async (uid) => {
+  changeUserRole = async (uid) => {
     try {
       const user = await this.findUserById(uid);
 
@@ -200,6 +205,69 @@ class UserServices {
       );
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  deleteUser = async (uid) => {
+    try {
+      const user = await this.findUserById(uid);
+      if (user) {
+        const result = await userModel.deleteOne({ _id: uid });
+        if (user.role === "PREMIUM") {
+          sendUserDeletedMail(user.email);
+        }
+        return result;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  changeRole = async (uid, role) => {
+    try {
+      const user = await this.findUserById(uid);
+      if (!user) {
+        console.log("Encontro user ", user);
+        return 1;
+      }
+      const result = await userModel.updateOne(
+        { _id: uid },
+        {
+          role: role,
+        }
+      );
+
+      if (!result) return 1;
+      return 2;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  deleteUsersInactivity = async () => {
+    try {
+      const users = await this.findAll();
+      const hoy = new Date();
+
+      // Filtrar usuarios que no se han conectado en los últimos dos días
+      const usuariosNoConectados = users.filter((user) => {
+        const tiempoInactivo = hoy - user.last_connection;
+        const diasInactivo = tiempoInactivo / (1000 * 60 * 60 * 24); // Milisegundos a días
+        return diasInactivo >= 2;
+      });
+
+      const number = usuariosNoConectados.length;
+      const deleteInactiveUsers = usuariosNoConectados.filter(async (user) => {
+        sendUserInactivityMail(user.email);
+        const result = await userModel.deleteOne({ _id: user._id });
+      });
+
+      return number;
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   };
 }

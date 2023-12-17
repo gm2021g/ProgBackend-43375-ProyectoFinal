@@ -56,9 +56,26 @@ export const getCurrentUser = (req, res) => {
   }
 };
 
+export const getUserById = async (req, res) => {
+  try {
+    const currentUser = req.session.user;
+
+    const { uid } = req.params;
+
+    const user = await UserService.findUserById(uid);
+
+    res
+      .status(200)
+      .render("modifyUser", { styles: "style.css", currentUser, user });
+  } catch (error) {
+    req.logger.error(error);
+    res.render("error");
+  }
+};
+
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await UserService.finAll();
+    const users = await UserService.findAll();
 
     if (!users) {
       CustomError.createError({
@@ -66,9 +83,7 @@ export const getAllUsers = async (req, res) => {
       });
     }
 
-    res.status(200).send({
-      payload: users,
-    });
+    res.status(200).render("adminUsers", { styles: "style.css", users });
   } catch (error) {
     req.logger.error(error);
 
@@ -173,7 +188,7 @@ export const changeUserRole = async (req, res) => {
   try {
     const { uid } = req.params;
 
-    const result = await UserService.changeRole(uid);
+    const result = await UserService.changeUserRole(uid);
 
     if (result === 1) {
       CustomError.createError({
@@ -183,10 +198,34 @@ export const changeUserRole = async (req, res) => {
       CustomError.createError({
         message: ERRORS_ENUM["ADMIN CANT CHANGE THE ROLE"],
       });
-    }
-    else if (result === 3) {
+    } else if (result === 3) {
       CustomError.createError({
         message: ERRORS_ENUM["Must upload documents"],
+      });
+    }
+
+    res.render("changeRole", {});
+  } catch (error) {
+    req.logger.error(error);
+
+    res.render("error", {
+      error: error.message,
+    });
+  }
+};
+
+export const changeRole = async (req, res) => {
+  try {
+    const { uid, role } = req.params;
+    const result = await UserService.changeRole(uid, role);
+
+    if (result === 1) {
+      CustomError.createError({
+        message: "Something went wrong",
+      });
+    } else if (result === 0) {
+      CustomError.createError({
+        message: ERRORS_ENUM["CANT CHANGE THE ROLE"],
       });
     }
 
@@ -227,5 +266,36 @@ export const uploadDocument = async (req, res) => {
     req.logger.error(error);
 
     return res.status(404).send({ message: "SOMETHING WENT WRONG" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const user = await UserService.deleteUser(uid);
+    res.status(200).send({
+      message: `User ${user} deleted`,
+    });
+  } catch (error) {
+    req.logger.error(error);
+
+    res.render("error", {
+      error: error.message,
+    });
+  }
+};
+
+export const deleteAllUsersInactivity = async (req, res) => {
+  try {
+    const numUsers = await UserService.deleteUsersInactivity();
+    res.status(200).send({
+      message: numUsers + " Inactive users deleted",
+    });
+  } catch (error) {
+    req.logger.error(error);
+
+    res.render("error", {
+      error: error.message,
+    });
   }
 };

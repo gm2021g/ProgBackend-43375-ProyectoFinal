@@ -35,4 +35,6 @@ Router.put("/:cid/product/:pid", updateProductQuantity);
 
 Router.delete("/:cid/product/:pid", deleteOneProduct);
 
+Router.delete("/:cid", emptyCart);
+
 export default Router;

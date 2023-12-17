@@ -176,6 +176,21 @@ export const emptyCart = async (req, res) => {
   }
 };
 
+export const deleteCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+
+    const result = await CartServices.deleteCart(cid);
+
+    res.status(200).send({
+      payload: result,
+    });
+  } catch (error) {
+    req.logger.error(error);
+    res.status(400).send({ status: error.name, message: error.message });
+  }
+};
+
 export const purchaseCart = async (req, res) => {
   try {
     const { cid } = req.params;

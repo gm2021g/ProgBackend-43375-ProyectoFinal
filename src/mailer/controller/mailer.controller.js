@@ -3,7 +3,7 @@ import __dirname from "../../dirname.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const Suscriptionhtml = `
+const headHtml = `
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -69,17 +69,42 @@ const Suscriptionhtml = `
         text-decoration: underline;
       }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>Welcome to Fragances Shop</h1>
-    </header>
-    <div class="container">
-    <p>
-      Thanks to register in Fragances Shop! We hope to see you soon!
-    </p>
-    </div>
-  </body>`;
+  </head>`;
+
+const suscriptionHtml = `<body>
+  <header>
+    <h1>Welcome to Fragances Shop</h1>
+  </header>
+  <div class="container">
+  <p>
+    Thanks to register in Fragances Shop! 
+    You have a gift coupon for $300 on your first purchase.
+    We hope to see you soon!
+  </p>
+  </div>
+</body>`;
+
+const deletedUserHtml = `<body>
+  <header>
+    <h1>Fragances Shop user cancellation notice</h1>
+  </header>
+  <div class="container">
+  <p>
+    Your user has been unsubscribed. We hope you come back soon!
+  </p>
+  </div>
+</body>`;
+
+const inactivityUserHtml = `<body>
+  <header>
+    <h1>Fragances Shop user cancellation notice</h1>
+  </header>
+  <div class="container">
+  <p>
+    Your account was deleted due to user inactivity.
+  </p>
+  </div>
+</body>`;
 
 const transport = nodemailer.createTransport({
   service: "gmail",
@@ -95,7 +120,39 @@ export const sendSuscriptionMail = async (email) => {
     from: process.env.EMAIL,
     to: email,
     subject: "Fragances Shop",
-    html: Suscriptionhtml,
+    html: headHtml + suscriptionHtml,
+    attachments: [
+      {
+        filename: "fragances.jpg",
+        path: __dirname + "/public/images/fragances.jpg",
+        cid: "fragances",
+      },
+    ],
+  });
+};
+
+export const sendUserDeletedMail = async (email) => {
+  await transport.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Fragances Shop",
+    html: headHtml + deletedUserHtml,
+    attachments: [
+      {
+        filename: "fragances.jpg",
+        path: __dirname + "/public/images/fragances.jpg",
+        cid: "fragances",
+      },
+    ],
+  });
+};
+
+export const sendUserInactivityMail = async (email) => {
+  await transport.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Fragances Shop",
+    html: headHtml + inactivityUserHtml,
     attachments: [
       {
         filename: "fragances.jpg",
