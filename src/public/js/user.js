@@ -19,8 +19,6 @@ const deleteUser = async (uid) => {
   }
 };
 
-// --------------------------------------------------------------------------------------
-
 function modifyUserRole(userId) {
   const radioSeleccionado = document.querySelector(
     'input[name="role"]:checked'

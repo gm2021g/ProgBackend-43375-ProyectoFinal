@@ -21,11 +21,9 @@ const initializePassport = () => {
         passReqToCallback: true,
         usernameField: "email",
       },
-      (req, username, password, done) => registerUser(req, username, password, done)
+      (req, username, password, done) =>
+        registerUser(req, username, password, done)
     )
-
-    
-
   );
 
   passport.use(
@@ -47,7 +45,6 @@ const initializePassport = () => {
       },
       async (jwt_payload, done) => {
         try {
-
           return done(null, jwt_payload);
         } catch (error) {
           console.log(error);

@@ -54,29 +54,6 @@ export const getCartById = async (req, res) => {
   }
 };
 
-/*
-export const addProductToCart = async (req, res) => {
-  try {
-    const { cid, pid } = req.params;
-
-    const result = await CartServices.addProductToCart(cid, pid);
-
-    if (!result) {
-      CustomError.createError({
-        message: ERRORS_ENUM["INVALID CART PROPERTY"],
-      });
-    }
-
-    res.status(200).send({
-      payload: result,
-    });
-  } catch (error) {
-    req.logger.error(error);
-    res.status(400).send({ status: error.name, message: error.message });
-  }
-};
-*/
-
 export const addProductToCart = async (req, res) => {
   try {
     const { cid, pid } = req.params;

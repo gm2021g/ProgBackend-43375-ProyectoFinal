@@ -13,7 +13,6 @@ import {
   postRestoreForm,
   changeUserRole,
   uploadDocument,
- // deleteUser,
 } from "../controller/users.controllers.js";
 
 const Router = express.Router();
