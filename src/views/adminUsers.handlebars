@@ -3,9 +3,13 @@
   <hr> <br>
 
   <h3> Delete users who have been inactive for more than two days </h3>
-  <button class="product__detail__button">
-     <a href="/api/users/delete"> Delete Inactive Users </a>
-  </button>
+    <div>
+      <button     
+        class="product__detail__button"
+        id="deleteUserInactivity__btn">
+        Delete inactive users
+      </button>
+    </div>
   <br>
   <br>
   <hr>
@@ -23,6 +27,7 @@
           <p>Last connection: {{last_connection}} </p>
         </div>
       </div>
+      
       <br>
       <button class="product__detail__button">
       <a href="/api/users/{{_id}}"> Modify User </a>
@@ -36,4 +41,4 @@
   {{/if}}
 
 </main>
-<script src="/js/products.js"></script>
+<script src="/js/process.js"></script>

@@ -1,3 +1,4 @@
+// comentario prueba
 import express from "express";
 import {
   changeUserRole,
@@ -15,7 +16,7 @@ Router.get("/", authPolicies("ADMIN"), getAllUsers);
 
 Router.get("/:uid", getUserById);
 
-Router.delete("/delete/:uid", deleteUser);
+Router.delete("/deleteuser/:uid", deleteUser);
 
 Router.get("/premium/:uid", changeUserRole);
 

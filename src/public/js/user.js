@@ -7,7 +7,7 @@ deleteBtn.addEventListener("click", () => {
 
 const deleteUser = async (uid) => {
   try {
-    const response = await fetch(`/api/users/delete/${uid}`, {
+    const response = await fetch(`/api/users/deleteuser/${uid}`, {
       method: "DELETE",
     });
 
