@@ -4,6 +4,7 @@ import ticketModel from "../../models/ticket.model.js";
 import userModel from "../../models/user.model.js";
 import productsModel from "../../models/products.model.js";
 import { ProductsServices } from "../../products/services/products.services.js";
+import { confirmPurchaseMail } from "../../mailer/controller/mailer.controller.js";
 
 class CartsService {
   createCart = async () => {
@@ -44,39 +45,6 @@ class CartsService {
       console.log(error);
     }
   };
-  /*
-  addProductToCart = async (cid, pid) => {
-    try {
-      const cart = await this.getCartById(cid);
-
-      if (!cart) throw new Error("Cart Not Found");
-
-      const findProduct = await cartsModel.findOne({ "carts.product": pid });
-
-      if (findProduct) {
-        const result = await cartsModel.updateOne(
-          { "cart.product": pid },
-          {
-            $inc: {
-              "cart.$.quantity": 1,
-            },
-          }
-        );
-
-        return result;
-      }
-
-      const result = await cartsModel.updateOne(
-        { _id: cid },
-        { $push: { cart: { product: pid } } }
-      );
-
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-*/
 
   addProductToCart = async (cid, pid, user) => {
     try {
@@ -87,10 +55,6 @@ class CartsService {
       const product = await productsModel.findById({ _id: pid }).lean().exec();
 
       if (!product) throw new Error("Product Not Found");
-
-      // console.log(product.owner, " product.owner ****************** ");
-      // console.log(user._id, " user._id ****************** ");
-      // console.log(user.role, " user.role ****************** ");
 
       if (
         user.role === "PREMIUM" &&
@@ -234,6 +198,7 @@ class CartsService {
       const total = await this.removeProductFromStock(cid, products);
       const reduceTotal = total.reduce((acc, curr) => acc + curr, 0);
       const ticket = await this.generateTicket(purchaser.email, reduceTotal);
+      confirmPurchaseMail(purchaser.email);
       return ticket;
     } catch (error) {
       console.log(error);

@@ -106,6 +106,18 @@ const inactivityUserHtml = `<body>
   </div>
 </body>`;
 
+const confirmPurchaseHtml = `<body>
+  <header>
+    <h1>Purchase confirmation</h1>
+  </header>
+  <div class="container">
+  <p>
+    Thank you for your purchase!
+    In a few minutes you will receive a payment link.
+  </p>
+  </div>
+</body>`;
+
 const transport = nodemailer.createTransport({
   service: "gmail",
   port: 587,
@@ -153,6 +165,22 @@ export const sendUserInactivityMail = async (email) => {
     to: email,
     subject: "Fragances Shop",
     html: headHtml + inactivityUserHtml,
+    attachments: [
+      {
+        filename: "fragances.jpg",
+        path: __dirname + "/public/images/fragances.jpg",
+        cid: "fragances",
+      },
+    ],
+  });
+};
+
+export const confirmPurchaseMail = async (email) => {
+  await transport.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Fragances Shop",
+    html: headHtml + confirmPurchaseHtml,
     attachments: [
       {
         filename: "fragances.jpg",
