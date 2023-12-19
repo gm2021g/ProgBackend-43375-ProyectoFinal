@@ -58,12 +58,12 @@ Router.post(
 
 //login con github
 Router.get(
-  "/github",
+  "/auth/github",
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
 Router.get(
-  "/githubcallback",
+  "/auth/githubcallback",
   passport.authenticate("github", { failureRedirect: "/login" }),
   loginUserGithub
 );
