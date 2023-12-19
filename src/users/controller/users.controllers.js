@@ -299,3 +299,27 @@ export const deleteAllUsersInactivity = async (req, res) => {
     });
   }
 };
+
+
+//user login passport local
+export const loginUserPassport = async (req, res) => {
+  if (!req.user) res.status(400).send("Invalid credentials");
+
+  req.session.user = req.user;
+
+  return res.redirect("/home/products");
+};
+
+//user register passport local
+export const createUserPassport = async (req, res) => {
+  return res.redirect("/login");
+};
+
+// user login passport github
+export const loginUserGithub = async (req, res) => {
+  if (!req.user) res.status(400).send("Something went wrong");
+
+  req.session.user = req.user;
+
+  return res.redirect("/home/products");
+};

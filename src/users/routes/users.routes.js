@@ -13,6 +13,7 @@ import {
   postRestoreForm,
   changeUserRole,
   uploadDocument,
+  loginUserGithub,
 } from "../controller/users.controllers.js";
 
 const Router = express.Router();
@@ -45,8 +46,6 @@ Router.get("/restoreForm/:uid/:token", getRestoreForm);
 
 Router.post("/restoreForm/:uid/:token", postRestoreForm);
 
-
-
 Router.post(
   "/:uid/documents",
   upload.fields([
@@ -55,6 +54,18 @@ Router.post(
     { name: "products", maxCount: 10 },
   ]),
   uploadDocument
+);
+
+//login con github
+Router.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+Router.get(
+  "/auth/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  loginUserGithub
 );
 
 export default Router;

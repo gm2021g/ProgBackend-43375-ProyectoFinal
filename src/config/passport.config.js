@@ -2,6 +2,7 @@
 import passport from "passport";
 import passportJwt from "passport-jwt";
 import passportLocal from "passport-local";
+import GitHubStrategy from "passport-github2";
 import UserService from "../users/services/users.services.js";
 import { cookieExtractor } from "../utils/jwt.js";
 import dotenv from "dotenv";
@@ -50,6 +51,42 @@ const initializePassport = () => {
           console.log(error);
 
           return done(error);
+        }
+      }
+    )
+  );
+
+  //passport Github
+  passport.use(
+    "github",
+    new GitHubStrategy(
+      {
+        clientID: "Iv1.5c71880f9e9e6f94",
+        clientSecret: "78db4227ce746b0c61c8321141d859f6d657a4dd",
+        callbackURL: "http://localhost:8080/auth/githubcallback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const findUser = await userModel.getUserByEmail({
+            email: profile._json.email,
+          });
+
+          if (findUser) {
+            return done(null, findUser);
+          }
+
+          const newUser = {
+            first_name: profile._json.name,
+            last_name: "",
+            email: profile._json.email,
+            password: "",
+          };
+
+          const result = await userModel.userCreate(newUser);
+
+          return done(null, result);
+        } catch (error) {
+          return done("Error to register", error);
         }
       }
     )
