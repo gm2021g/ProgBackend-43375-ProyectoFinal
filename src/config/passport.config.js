@@ -65,7 +65,7 @@ const initializePassport = () => {
         clientSecret: "b917727b89ad9a0613eb47d8906c70c35da54847",
         //"http://localhost:8080/auth/githubcallback",
         callbackURL:
-          "https://progbackend-43375-proyectofinal-develop.up.railway.app/auth/githubcallback",
+          "https://progbackend-43375-proyectofinal-develop.up.railway.app/githubcallback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
